@@ -7,7 +7,7 @@ export const config = {
   db: {
     host: process.env.DB_HOST || "localhost",
     user: process.env.DB_USER || "root",
-    password: process.env.PASSWORD || "",
-    name: process.env.NAME || "myapp_db",
+    password: process.env.DB_PASSWORD || "",
+    name: process.env.DB_NAME || "myapp_db",
   },
 };
