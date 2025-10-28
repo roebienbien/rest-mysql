@@ -5,7 +5,7 @@ export const userController = {
   async createUser(req: Request, res: Response) {
     try {
       const user = await userService.createUser(req.body);
-      res.status(201).json(user);
+      res.status(201).json({ message: "User created successfully", user });
     } catch (error: any) {
       res.status(500).json({ error: error.message || "Failed to create user" });
     }
