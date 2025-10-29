@@ -3,9 +3,9 @@ import { Response } from "express";
 
 export const sendSuccess = (
   res: Response,
+  status = 200,
   message: string,
   data?: unknown,
-  status = 200,
 ) => {
   return res.status(status).json({
     success: true,

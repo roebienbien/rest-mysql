@@ -1,6 +1,8 @@
 import { prisma } from "../lib/db";
 import type { CreateUserInput } from "../schemas/user-schema";
 import bcrypt from "bcrypt";
+import { omitPassword } from "../utils/omit-password";
+// import prisma from "../lib/prisma";
 
 const userService = {
   async createUser(data: CreateUserInput) {
@@ -13,24 +15,28 @@ const userService = {
       },
     });
     // Don't return password to the client
-    const { password, ...safeUser } = user;
-    return safeUser;
+    return omitPassword(user);
   },
 
   async getUsers() {
-    return prisma.user.findMany();
+    // return prisma.user.findMany();
+    const users = await prisma.user.findMany();
+    return omitPassword(users);
   },
 
   async getUserById(id: number) {
-    return prisma.user.findUnique({ where: { id } });
+    const user = await prisma.user.findUnique({ where: { id } });
+    return omitPassword(user);
   },
 
   async updateUser(id: number, data: { name?: string; email?: string }) {
-    return prisma.user.update({ where: { id }, data });
+    const updateUser = await prisma.user.update({ where: { id }, data });
+    return omitPassword(updateUser);
   },
 
   async deleteUser(id: number) {
-    return prisma.user.delete({ where: { id } });
+    const deleteUser = await prisma.user.delete({ where: { id } });
+    return omitPassword(deleteUser);
   },
 };
 
