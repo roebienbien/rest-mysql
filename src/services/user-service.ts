@@ -1,8 +1,20 @@
 import { prisma } from "../lib/db";
+import type { CreateUserInput } from "../schemas/user-schema";
+import bcrypt from "bcrypt";
 
 const userService = {
-  async createUser(data: { name: string; email: string }) {
-    return prisma.user.create({ data });
+  async createUser(data: CreateUserInput) {
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        email: data.email,
+        password: hashedPassword,
+      },
+    });
+    // Don't return password to the client
+    const { password, ...safeUser } = user;
+    return safeUser;
   },
 
   async getUsers() {

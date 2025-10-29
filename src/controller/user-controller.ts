@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import userService from "../services/user-service";
+import { sendError, sendSuccess } from "../utils/response-handler";
 
 export const userController = {
   async createUser(req: Request, res: Response) {
     try {
       const user = await userService.createUser(req.body);
-      res.status(201).json({ message: "User created successfully", user });
+      return sendSuccess(res, "User created successfully", user, 201);
     } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to create user" });
+      return sendError(res, error.message || "failed to create user");
     }
   },
 
